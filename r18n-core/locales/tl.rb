@@ -4,16 +4,15 @@ module R18n
         sublocales: [],
 
         week_start: :sunday,
-        wday_names: %w{Sunday Monday Tuesday Wednesday Thursday Friday
-                       Saturday},
-        wday_abbrs: %w{Sun Mon Tue Wed Thu Fri Sat},
+        wday_names: %w{Linggo Lunes Martes Miyerkules Huwebes Biyernes Sabado},
+        wday_abbrs: %w{Lin Lun Mar Miy Huw Biy Sab},
 
-        month_names: %w{January February March April May June July August
-                        September October November December},
-        month_abbrs: %w{Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec},
+        month_names: %w{Enero Pebrero Marso Abril Mayo Hunyo Hulyo Agosto Setyembre Oktubre Nobyembre Disyembre},
+        month_abbrs: %w{Ene Peb Mar Abr May Hun Hul Ago Set Okt Nob Dis},
+
 
         date_format: '%d/%m/%Y',
-        full_format: '%e of %B',
+        full_format: '%e ng %B',
         year_format: '_, %Y',
 
         number_decimal: '.',
@@ -21,13 +20,13 @@ module R18n
 
     def ordinalize(n)
       if (11..13).include?(n % 100)
-        "#{n}th"
+        "#{n}ika"
       else
         case n % 10
-        when 1; "#{n}st"
-        when 2; "#{n}nd"
-        when 3; "#{n}rd"
-        else    "#{n}th"
+        when 1; "#{n}ika"
+        when 2; "#{n}ika"
+        when 3; "#{n}ika"
+        else    "#{n}ika"
         end
       end
     end
