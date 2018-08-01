@@ -1,8 +1,15 @@
-require File.join(File.dirname(__FILE__), 'pt')
+# frozen_string_literal: true
 
-module R18n::Locales
-  class PtBr < Pt
-    set title: 'Português brasileiro',
-        sublocales: %w{pt en}
+require_relative 'pt'
+
+module R18n
+  module Locales
+    # Brazilian Portuguese locale
+    class PtBr < Pt
+      set(
+        title: 'Português brasileiro',
+        sublocales: %w[pt en]
+      )
+    end
   end
 end

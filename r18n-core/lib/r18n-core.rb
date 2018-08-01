@@ -1,55 +1,56 @@
-=begin
-Main file to load all neccessary classes for i18n support.
+# frozen_string_literal: true
 
-Copyright (C) 2008 Andrey “A.I.” Sitnik <andrey@sitnik.ru>
+# Main file to load all neccessary classes for i18n support.
+#
+# Copyright (C) 2008 Andrey “A.I.” Sitnik <andrey@sitnik.ru>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-=end
-
-require 'pathname'
-
-dir = Pathname(__FILE__).dirname.expand_path + 'r18n-core'
-require dir.join('version').to_s
-require dir.join('utils').to_s
-require dir.join('locale').to_s
-require dir.join('unsupported_locale').to_s
-require dir.join('translated_string').to_s
-require dir.join('untranslated').to_s
-require dir.join('translation').to_s
-require dir.join('filters').to_s
-require dir.join('filter_list').to_s
-require dir.join('yaml_methods').to_s
-require dir.join('yaml_loader').to_s
-require dir.join('i18n').to_s
-require dir.join('helpers').to_s
+%w[
+  version
+  utils
+  locale
+  unsupported_locale
+  translated_string
+  untranslated
+  translation
+  filters
+  filter_list
+  yaml_methods
+  yaml_loader
+  i18n
+  helpers
+].each do |file|
+  require_relative File.join('r18n-core', file)
+end
 
 module R18n
   autoload :Translated, 'r18n-core/translated'
 
   class << self
-
     # Set I18n object globally. You can miss translation +places+, it will be
     # taken from <tt>R18n.default_places</tt>.
     def set(i18n = nil, places = R18n.default_places, &block)
-      if block_given?
-        @setter = block
-        @i18n   = nil
-      elsif i18n.is_a? I18n
-        @i18n = i18n
-      else
-        @i18n = I18n.new(i18n, places)
-      end
+      @i18n =
+        if block_given?
+          @setter = block
+          nil
+        elsif i18n.is_a? I18n
+          i18n
+        else
+          I18n.new(i18n, places)
+        end
     end
 
     # Set I18n object to current thread.
@@ -65,14 +66,14 @@ module R18n
     # Get I18n object for current thread.
     def get
       thread[:r18n_i18n] ||
-      (thread[:r18n_setter] && thread_set(thread[:r18n_setter].call)) ||
-      @i18n ||
-      (@setter && set(@setter.call))
+        (thread[:r18n_setter] && thread_set(thread[:r18n_setter].call)) ||
+        @i18n ||
+        (@setter && set(@setter.call))
     end
 
     # Clean translations cache.
     def clear_cache!
-      self.cache = { }
+      self.cache = {}
     end
 
     # Delete I18n object from current thread and global variable.
@@ -82,7 +83,7 @@ module R18n
     end
 
     # Deprecated.
-    alias :reset :reset!
+    alias reset reset!
 
     # Get the current thread.
     def thread
@@ -106,7 +107,7 @@ module R18n
     #     - R18n.change(locale).t.language_title
     def change(locale)
       locale = locale.code if locale.is_a? Locale
-      exists = get ? get.locales.map { |i| i.code } : []
+      exists = get ? get.locales.map(&:code) : []
       places = get ? get.translation_places : R18n.default_places
       R18n::I18n.new([locale] + exists, places)
     end
@@ -120,14 +121,14 @@ module R18n
     # Return Array of locales with available translations. You can miss
     # translation +places+, it will be taken from <tt>R18n.default_places</tt>.
     def available_locales(places = R18n.default_places)
-      R18n::I18n.convert_places(places).map { |i| i.available }.flatten.uniq
+      R18n::I18n.convert_places(places).map(&:available).flatten.uniq
     end
 
     # Default places for <tt>R18n.set</tt> and <tt>R18n.available_locales</tt>.
     #
     # You can set block to calculate places dynamically:
     #   R18n.default_places { settings.i18n_places }
-    attr_accessor :default_places
+    attr_writer :default_places
 
     def default_places(&block)
       if block_given?
@@ -151,9 +152,8 @@ module R18n
     attr_accessor :cache
   end
 
-  dir = Pathname(__FILE__).dirname.expand_path
   self.default_loader   = R18n::Loader::YAML
   self.default_places   = nil
-  self.extension_places = [Loader::YAML.new(dir + '../base')]
-  self.clear_cache!
+  self.extension_places = [Loader::YAML.new(File.join(__dir__, '..', 'base'))]
+  clear_cache!
 end

@@ -1,4 +1,6 @@
-require File.join(File.dirname(__FILE__), '../../lib/sinatra/r18n')
+# frozen_string_literal: true
+
+require_relative '../../lib/sinatra/r18n'
 require 'sinatra'
 
 get '/:locale/posts/:name' do
@@ -31,5 +33,5 @@ get '/warning' do
 end
 
 get '/untranslated' do
-  "#{t.post.no}"
+  t.post.no.to_s
 end

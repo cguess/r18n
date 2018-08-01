@@ -1,3 +1,38 @@
+# Change Log
+
+## 3.0.5 (ب)
+* Fix Farsi locale name (by @iriman).
+
+## 3.0.4 (𐤀)
+* Fix `Translated` compatibility with `Hash` (by Alexander Popov).
+
+## 3.0.3 (〥)
+* Fix missed filters in `Untranslted` initialization (by Alexander Popov).
+
+## 3.0.2 (Ё)
+* Fix `Untranslted.to_s` (by Patrik Rak).
+
+## 3.0.1 (Brooklyn)
+* Fix `no` locale deprecation warning.
+
+## 3.0 (New York)
+* Deprecate `no` locale, use `nb` instead (by Alexander Popov).
+* Remove unsafe `!!proc` filter.
+* Reduce `eval` calls (by Alexander Popov).
+
+## 2.2 (La Habana)
+* Change date format in `en` locale to `YYYY-MM-DD` (by Alexander Popov).
+* Add `TranslatedString#as_json` for ActiveSupport compatibility (by Tim Craft).
+* Fix `TranslatedString#html_safe?` behaviour (by Tim Craft).
+* Fix unsupported `LANG` environment (by Chris Poirier).
+* Fix `Locale#localize` method for `DateTime` objects (by Alexander Popov).
+
+## 2.1.8 (Ѣ)
+* Fix `true` and `false` keys support (by Alexander Popov).
+
+## 2.1.7 (Sewe)
+* Add Afrikaans locale (by Llewellyn van der Merwe).
+
 ## 2.1.6 (Berlin)
 * Better `TranslatedString` → `String` converting (by Patrik Rak).
 * Add Ruby on Rails 5 support.

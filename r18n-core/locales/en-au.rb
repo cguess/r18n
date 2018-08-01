@@ -1,8 +1,13 @@
-require File.join(File.dirname(__FILE__), 'en')
+# frozen_string_literal: true
 
-module R18n::Locales
-  class EnAu < En
-    set title: 'Australian English',
-        sublocales: %w{en}
+require_relative 'en'
+
+module R18n
+  module Locales
+    # Australian English locale
+    class EnAu < En
+      set title: 'Australian English',
+          sublocales: %w[en]
+    end
   end
 end

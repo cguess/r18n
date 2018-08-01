@@ -281,25 +281,6 @@ alarm: !!textile
 t.alarm #=> "<p>It will delete <em>all</em> users!</p>"
 ```
 
-#### Lambdas
-
-You can use lambdas in your translations.
-
-```yaml
-sum: !!proc |x, y| x + y
-```
-
-```ruby
-t.sum(1, 2) #=> 3
-```
-
-If this is unsafe in your application (for example, user can change
-translations), you can disable it:
-
-```ruby
-R18n::Filters.off(:procedure)
-```
-
 ### Localization
 
 You can print numbers and floats according to the rules of the user locale:
@@ -324,8 +305,8 @@ R18n has some built-in time formats for locales: `:human`, `:full` and
 ```ruby
 l Time.now, :human #=> "now"
 l Time.now, :full  #=> "August 9th, 2009 21:47"
-l Time.now         #=> "08/09/2009 21:41"
-l Time.now.to_date #=> "08/09/2009"
+l Time.now         #=> "2009-08-09 21:41"
+l Time.now.to_date #=> "2009-08-09"
 ```
 
 ### Model
@@ -456,7 +437,7 @@ simple:
   values.
   * If your country has alternate languages (for example, in exUSSR countries
     most people also know Russian), add
-    <tt>sublocales %w{<i>another_locale</i> en}</tt>.
+    <tt>sublocales %w[<i>another_locale</i> en]</tt>.
 * Create in `base/` file <tt><i>code</i>.yml</tt>  for your language and
   translate the base messages. Just copy file from language, which you know,
   and rewrite values.
